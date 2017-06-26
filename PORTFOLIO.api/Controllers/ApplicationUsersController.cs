@@ -12,85 +12,85 @@ using Microsoft.AspNetCore.Authorization;
 namespace PORTFOLIO.api.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class StuffController : Controller
+    public class ApplicationUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public StuffController(ApplicationDbContext context)
+        public ApplicationUsersController(ApplicationDbContext context)
         {
             _context = context;    
         }
 
-        // GET: Stuff
+        // GET: ApplicationUsers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Stuff.ToListAsync());
+            return View(await _context.ApplicationUser.ToListAsync());
         }
 
-        // GET: Stuff/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: ApplicationUsers/Details/5
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var stuff = await _context.Stuff
+            var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (stuff == null)
+            if (applicationUser == null)
             {
                 return NotFound();
             }
 
-            return View(stuff);
+            return View(applicationUser);
         }
 
-        // GET: Stuff/Create
+        // GET: ApplicationUsers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Stuff/Create
+        // POST: ApplicationUsers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ImagePath,Categories,Link,Year,Order,RepoLink,Role")] Stuff stuff)
+        public async Task<IActionResult> Create([Bind("Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(stuff);
+                _context.Add(applicationUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(stuff);
+            return View(applicationUser);
         }
 
-        // GET: Stuff/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: ApplicationUsers/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var stuff = await _context.Stuff.SingleOrDefaultAsync(m => m.Id == id);
-            if (stuff == null)
+            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
             {
                 return NotFound();
             }
-            return View(stuff);
+            return View(applicationUser);
         }
 
-        // POST: Stuff/Edit/5
+        // POST: ApplicationUsers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImagePath,Categories,Link,Year,Order,RepoLink,Role")] Stuff stuff)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
         {
-            if (id != stuff.Id)
+            if (id != applicationUser.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace PORTFOLIO.api.Controllers
             {
                 try
                 {
-                    _context.Update(stuff);
+                    _context.Update(applicationUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StuffExists(stuff.Id))
+                    if (!ApplicationUserExists(applicationUser.Id))
                     {
                         return NotFound();
                     }
@@ -115,41 +115,41 @@ namespace PORTFOLIO.api.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(stuff);
+            return View(applicationUser);
         }
 
-        // GET: Stuff/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: ApplicationUsers/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var stuff = await _context.Stuff
+            var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (stuff == null)
+            if (applicationUser == null)
             {
                 return NotFound();
             }
 
-            return View(stuff);
+            return View(applicationUser);
         }
 
-        // POST: Stuff/Delete/5
+        // POST: ApplicationUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var stuff = await _context.Stuff.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Stuff.Remove(stuff);
+            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            _context.ApplicationUser.Remove(applicationUser);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool StuffExists(int id)
+        private bool ApplicationUserExists(string id)
         {
-            return _context.Stuff.Any(e => e.Id == id);
+            return _context.ApplicationUser.Any(e => e.Id == id);
         }
     }
 }

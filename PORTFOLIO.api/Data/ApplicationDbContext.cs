@@ -24,5 +24,7 @@ namespace PORTFOLIO.api.Data
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<PORTFOLIO.api.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }
