@@ -4,20 +4,21 @@ using System.Threading.Tasks;
 
 namespace PORTFOLIO.api.Controllers.api
 {
+    [Route("api/contact")]
     public class Contact : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
 
         public Contact(ApplicationDbContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(Contact contactData)
+        public async Task<IActionResult> PostAsync(Models.Contact contactData)
         {
-            _context.Add(contactData);
-            await _context.SaveChangesAsync();
+            context.Contacts.Add(contactData);
+            await context.SaveChangesAsync();
 
             //TODO: Send email
 

@@ -22,7 +22,7 @@ namespace PORTFOLIO.api.Controllers.api
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            var stuff = await this.context.Stuff.ToListAsync();
+            var stuff = await this.context.Stuff.OrderBy(x => x.Order).ToListAsync();
             return Ok(new JsonResult(stuff).Value);
         }
     }
