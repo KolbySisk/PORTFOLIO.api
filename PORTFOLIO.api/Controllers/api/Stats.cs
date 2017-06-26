@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AngleSharp;
+using PORTFOLIO.api.Data;
 
 namespace PORTFOLIO.api.Controllers.api
 {
@@ -17,10 +18,12 @@ namespace PORTFOLIO.api.Controllers.api
     public class Stats : Controller
     {
         private readonly IConfigurationRoot config;
+        private readonly ApplicationDbContext context;
 
-        public Stats(IConfigurationRoot config)
+        public Stats(IConfigurationRoot config, ApplicationDbContext context)
         {
             this.config = config;
+            this.context = context;
         }
 
         public async Task<IActionResult> GetStats()
@@ -34,8 +37,8 @@ namespace PORTFOLIO.api.Controllers.api
 
         private async Task<SnowboardStats> GetSnowboardStats()
         {
-            var username = config.GetSection("epicMixUsername").Value;
-            var password = config.GetSection("epicMixPassword").Value;
+            var username = context.Secrets.First(x => x.Name == "epicMixUsername").Value;
+            var password = context.Secrets.First(x => x.Name == "epicMixPassword").Value;
 
             var baseAddress = new Uri("https://www.epicmix.com/vailresorts/sites/epicmix/");
             var cookieContainer = new CookieContainer();

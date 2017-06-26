@@ -12,17 +12,17 @@ namespace PORTFOLIO.api.Controllers.api
     [ResponseCache(Duration = 7200)]
     public class Stuff : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
 
         public Stuff(ApplicationDbContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            var stuff = await _context.Stuff.ToListAsync();
+            var stuff = await this.context.Stuff.ToListAsync();
             return Ok(new JsonResult(stuff).Value);
         }
     }
